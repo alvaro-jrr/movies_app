@@ -6,7 +6,7 @@
 import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:movies_app/core/utils/network_info.dart' as _i7;
+import 'package:movies_app/core/network/network_info.dart' as _i7;
 import 'package:movies_app/features/movies/data/data_sources/movies_local_data_source.dart'
     as _i2;
 import 'package:movies_app/features/movies/data/data_sources/movies_remote_data_source.dart'

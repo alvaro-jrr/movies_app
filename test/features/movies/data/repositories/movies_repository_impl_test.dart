@@ -2,10 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+
 import 'package:movies_app/core/error/exceptions.dart';
 import 'package:movies_app/core/error/failures.dart';
-
-import 'package:movies_app/core/utils/network_info.dart';
+import 'package:movies_app/core/network/network_info.dart';
 import 'package:movies_app/features/movies/data/data_sources/movies_local_data_source.dart';
 import 'package:movies_app/features/movies/data/data_sources/movies_remote_data_source.dart';
 import 'package:movies_app/features/movies/data/models/genre_model.dart';

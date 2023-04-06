@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:movies_app/core/error/failures.dart';
 import 'package:movies_app/core/use_cases/use_case.dart';
 import 'package:movies_app/features/movies/domain/entities/movie.dart';

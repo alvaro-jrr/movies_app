@@ -4,7 +4,6 @@ class Movie extends Equatable {
   final int id;
   final String originalTitle;
   final String overview;
-  final double popularity;
   final String posterPath;
   final DateTime? releaseDate;
   final String title;
@@ -14,7 +13,6 @@ class Movie extends Equatable {
     required this.id,
     required this.originalTitle,
     required this.overview,
-    required this.popularity,
     required this.posterPath,
     this.releaseDate,
     required this.title,
@@ -27,7 +25,6 @@ class Movie extends Equatable {
       id,
       originalTitle,
       overview,
-      popularity,
       posterPath,
       title,
       voteAverage,

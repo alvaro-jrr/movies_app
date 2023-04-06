@@ -24,7 +24,6 @@ void main() {
       id: 1,
       originalTitle: 'Test',
       overview: 'Test',
-      popularity: 1,
       posterPath: 'Test',
       title: 'Test',
       voteAverage: 1,

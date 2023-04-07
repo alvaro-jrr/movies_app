@@ -3,14 +3,18 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:movies_app/core/error/exceptions.dart';
+import 'package:movies_app/core/env/env.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:movies_app/core/error/exceptions.dart';
 import 'package:movies_app/features/movies/data/data_sources/movies_local_data_source.dart';
 import 'package:movies_app/features/movies/data/models/genre_model.dart';
 import 'package:movies_app/features/movies/data/models/movie_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-@GenerateNiceMocks([MockSpec<SharedPreferences>()])
+@GenerateNiceMocks([
+  MockSpec<SharedPreferences>(),
+  MockSpec<Env>(),
+])
 import 'movies_local_data_source_test.mocks.dart';
 
 import '../../../../fixtures/fixture_reader.dart';

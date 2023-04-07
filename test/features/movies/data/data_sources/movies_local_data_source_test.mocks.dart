@@ -6,6 +6,7 @@
 import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:movies_app/core/env/env.dart' as _i4;
 import 'package:shared_preferences/shared_preferences.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -206,3 +207,8 @@ class MockSharedPreferences extends _i1.Mock implements _i2.SharedPreferences {
         returnValueForMissingStub: _i3.Future<void>.value(),
       ) as _i3.Future<void>);
 }
+
+/// A class which mocks [Env].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockEnv extends _i1.Mock implements _i4.Env {}

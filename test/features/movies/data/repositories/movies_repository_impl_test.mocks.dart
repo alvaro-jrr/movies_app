@@ -3,16 +3,18 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i5;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:movies_app/core/network/network_info.dart' as _i7;
 import 'package:movies_app/features/movies/data/data_sources/movies_local_data_source.dart'
-    as _i2;
+    as _i4;
 import 'package:movies_app/features/movies/data/data_sources/movies_remote_data_source.dart'
     as _i6;
-import 'package:movies_app/features/movies/data/models/genre_model.dart' as _i5;
-import 'package:movies_app/features/movies/data/models/movie_model.dart' as _i4;
+import 'package:movies_app/features/movies/data/models/genre_response_model.dart'
+    as _i3;
+import 'package:movies_app/features/movies/data/models/movie_response_model.dart'
+    as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -25,51 +27,99 @@ import 'package:movies_app/features/movies/data/models/movie_model.dart' as _i4;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeMovieResponseModel_0 extends _i1.SmartFake
+    implements _i2.MovieResponseModel {
+  _FakeMovieResponseModel_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeGenreResponseModel_1 extends _i1.SmartFake
+    implements _i3.GenreResponseModel {
+  _FakeGenreResponseModel_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [MoviesLocalDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockMoviesLocalDataSource extends _i1.Mock
-    implements _i2.MoviesLocalDataSource {
+    implements _i4.MoviesLocalDataSource {
   @override
-  _i3.Future<List<_i4.MovieModel>> getLastMovies() => (super.noSuchMethod(
+  _i5.Future<_i2.MovieResponseModel> getLastMovies() => (super.noSuchMethod(
         Invocation.method(
           #getLastMovies,
           [],
         ),
-        returnValue: _i3.Future<List<_i4.MovieModel>>.value(<_i4.MovieModel>[]),
+        returnValue:
+            _i5.Future<_i2.MovieResponseModel>.value(_FakeMovieResponseModel_0(
+          this,
+          Invocation.method(
+            #getLastMovies,
+            [],
+          ),
+        )),
         returnValueForMissingStub:
-            _i3.Future<List<_i4.MovieModel>>.value(<_i4.MovieModel>[]),
-      ) as _i3.Future<List<_i4.MovieModel>>);
+            _i5.Future<_i2.MovieResponseModel>.value(_FakeMovieResponseModel_0(
+          this,
+          Invocation.method(
+            #getLastMovies,
+            [],
+          ),
+        )),
+      ) as _i5.Future<_i2.MovieResponseModel>);
   @override
-  _i3.Future<List<_i5.GenreModel>> getLastGenres() => (super.noSuchMethod(
+  _i5.Future<_i3.GenreResponseModel> getLastGenres() => (super.noSuchMethod(
         Invocation.method(
           #getLastGenres,
           [],
         ),
-        returnValue: _i3.Future<List<_i5.GenreModel>>.value(<_i5.GenreModel>[]),
+        returnValue:
+            _i5.Future<_i3.GenreResponseModel>.value(_FakeGenreResponseModel_1(
+          this,
+          Invocation.method(
+            #getLastGenres,
+            [],
+          ),
+        )),
         returnValueForMissingStub:
-            _i3.Future<List<_i5.GenreModel>>.value(<_i5.GenreModel>[]),
-      ) as _i3.Future<List<_i5.GenreModel>>);
+            _i5.Future<_i3.GenreResponseModel>.value(_FakeGenreResponseModel_1(
+          this,
+          Invocation.method(
+            #getLastGenres,
+            [],
+          ),
+        )),
+      ) as _i5.Future<_i3.GenreResponseModel>);
   @override
-  _i3.Future<void> cacheMovies(List<_i4.MovieModel>? moviesToCache) =>
+  _i5.Future<void> cacheMovies(_i2.MovieResponseModel? moviesToCache) =>
       (super.noSuchMethod(
         Invocation.method(
           #cacheMovies,
           [moviesToCache],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
   @override
-  _i3.Future<void> cacheGenres(List<_i5.GenreModel>? genresToCache) =>
+  _i5.Future<void> cacheGenres(_i3.GenreResponseModel? genresToCache) =>
       (super.noSuchMethod(
         Invocation.method(
           #cacheGenres,
           [genresToCache],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 }
 
 /// A class which mocks [MoviesRemoteDataSource].
@@ -78,47 +128,99 @@ class MockMoviesLocalDataSource extends _i1.Mock
 class MockMoviesRemoteDataSource extends _i1.Mock
     implements _i6.MoviesRemoteDataSource {
   @override
-  _i3.Future<List<_i4.MovieModel>> getPopularMovies() => (super.noSuchMethod(
+  _i5.Future<_i2.MovieResponseModel> getPopularMovies() => (super.noSuchMethod(
         Invocation.method(
           #getPopularMovies,
           [],
         ),
-        returnValue: _i3.Future<List<_i4.MovieModel>>.value(<_i4.MovieModel>[]),
+        returnValue:
+            _i5.Future<_i2.MovieResponseModel>.value(_FakeMovieResponseModel_0(
+          this,
+          Invocation.method(
+            #getPopularMovies,
+            [],
+          ),
+        )),
         returnValueForMissingStub:
-            _i3.Future<List<_i4.MovieModel>>.value(<_i4.MovieModel>[]),
-      ) as _i3.Future<List<_i4.MovieModel>>);
+            _i5.Future<_i2.MovieResponseModel>.value(_FakeMovieResponseModel_0(
+          this,
+          Invocation.method(
+            #getPopularMovies,
+            [],
+          ),
+        )),
+      ) as _i5.Future<_i2.MovieResponseModel>);
   @override
-  _i3.Future<List<_i5.GenreModel>> getMovieGenres() => (super.noSuchMethod(
+  _i5.Future<_i3.GenreResponseModel> getMovieGenres() => (super.noSuchMethod(
         Invocation.method(
           #getMovieGenres,
           [],
         ),
-        returnValue: _i3.Future<List<_i5.GenreModel>>.value(<_i5.GenreModel>[]),
+        returnValue:
+            _i5.Future<_i3.GenreResponseModel>.value(_FakeGenreResponseModel_1(
+          this,
+          Invocation.method(
+            #getMovieGenres,
+            [],
+          ),
+        )),
         returnValueForMissingStub:
-            _i3.Future<List<_i5.GenreModel>>.value(<_i5.GenreModel>[]),
-      ) as _i3.Future<List<_i5.GenreModel>>);
+            _i5.Future<_i3.GenreResponseModel>.value(_FakeGenreResponseModel_1(
+          this,
+          Invocation.method(
+            #getMovieGenres,
+            [],
+          ),
+        )),
+      ) as _i5.Future<_i3.GenreResponseModel>);
   @override
-  _i3.Future<List<_i4.MovieModel>> getMoviesByGenre(int? genreId) =>
+  _i5.Future<_i2.MovieResponseModel> getMoviesByGenre(int? genreId) =>
       (super.noSuchMethod(
         Invocation.method(
           #getMoviesByGenre,
           [genreId],
         ),
-        returnValue: _i3.Future<List<_i4.MovieModel>>.value(<_i4.MovieModel>[]),
+        returnValue:
+            _i5.Future<_i2.MovieResponseModel>.value(_FakeMovieResponseModel_0(
+          this,
+          Invocation.method(
+            #getMoviesByGenre,
+            [genreId],
+          ),
+        )),
         returnValueForMissingStub:
-            _i3.Future<List<_i4.MovieModel>>.value(<_i4.MovieModel>[]),
-      ) as _i3.Future<List<_i4.MovieModel>>);
+            _i5.Future<_i2.MovieResponseModel>.value(_FakeMovieResponseModel_0(
+          this,
+          Invocation.method(
+            #getMoviesByGenre,
+            [genreId],
+          ),
+        )),
+      ) as _i5.Future<_i2.MovieResponseModel>);
   @override
-  _i3.Future<List<_i4.MovieModel>> getMoviesByTitle(String? title) =>
+  _i5.Future<_i2.MovieResponseModel> getMoviesByTitle(String? title) =>
       (super.noSuchMethod(
         Invocation.method(
           #getMoviesByTitle,
           [title],
         ),
-        returnValue: _i3.Future<List<_i4.MovieModel>>.value(<_i4.MovieModel>[]),
+        returnValue:
+            _i5.Future<_i2.MovieResponseModel>.value(_FakeMovieResponseModel_0(
+          this,
+          Invocation.method(
+            #getMoviesByTitle,
+            [title],
+          ),
+        )),
         returnValueForMissingStub:
-            _i3.Future<List<_i4.MovieModel>>.value(<_i4.MovieModel>[]),
-      ) as _i3.Future<List<_i4.MovieModel>>);
+            _i5.Future<_i2.MovieResponseModel>.value(_FakeMovieResponseModel_0(
+          this,
+          Invocation.method(
+            #getMoviesByTitle,
+            [title],
+          ),
+        )),
+      ) as _i5.Future<_i2.MovieResponseModel>);
 }
 
 /// A class which mocks [NetworkInfo].
@@ -126,9 +228,9 @@ class MockMoviesRemoteDataSource extends _i1.Mock
 /// See the documentation for Mockito's code generation for more information.
 class MockNetworkInfo extends _i1.Mock implements _i7.NetworkInfo {
   @override
-  _i3.Future<bool> get isConnected => (super.noSuchMethod(
+  _i5.Future<bool> get isConnected => (super.noSuchMethod(
         Invocation.getter(#isConnected),
-        returnValue: _i3.Future<bool>.value(false),
-        returnValueForMissingStub: _i3.Future<bool>.value(false),
-      ) as _i3.Future<bool>);
+        returnValue: _i5.Future<bool>.value(false),
+        returnValueForMissingStub: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
 }

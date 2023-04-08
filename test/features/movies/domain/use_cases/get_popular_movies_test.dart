@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 
 import 'package:movies_app/core/use_cases/use_case.dart';
 import 'package:movies_app/features/movies/domain/entities/movie.dart';
+import 'package:movies_app/features/movies/domain/entities/movie_response.dart';
 import 'package:movies_app/features/movies/domain/repositories/movies_repository.dart';
 import 'package:movies_app/features/movies/domain/use_cases/get_popular_movies.dart';
 
@@ -20,30 +21,34 @@ void main() {
     useCase = GetPopularMovies(mockMoviesRepository);
   });
 
-  const tPopularMovies = [
-    Movie(
-      id: 1,
-      originalTitle: 'Test',
-      overview: 'Test',
-      posterPath: 'Test',
-      title: 'Test',
-      voteAverage: 1,
-    ),
-  ];
+  const tMovieResponse = MovieResponse(
+    page: 1,
+    results: [
+      Movie(
+        id: 1,
+        originalTitle: 'Test',
+        overview: 'Test',
+        posterPath: 'Test',
+        title: 'Test',
+        voteAverage: 1,
+      ),
+    ],
+    totalPages: 1,
+  );
 
   test(
     'should get popular movies from the repository',
     () async {
       // arrange
       when(mockMoviesRepository.getPopularMovies())
-          .thenAnswer((_) async => const Right(tPopularMovies));
+          .thenAnswer((_) async => const Right(tMovieResponse));
 
       // act
       final result = await useCase(NoParams());
 
       // assert
       verify(mockMoviesRepository.getPopularMovies());
-      expect(result, const Right(tPopularMovies));
+      expect(result, const Right(tMovieResponse));
       verifyNoMoreInteractions(mockMoviesRepository);
     },
   );

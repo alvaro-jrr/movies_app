@@ -9,7 +9,9 @@ import 'package:movies_app/core/network/network_info.dart';
 import 'package:movies_app/features/movies/data/data_sources/movies_local_data_source.dart';
 import 'package:movies_app/features/movies/data/data_sources/movies_remote_data_source.dart';
 import 'package:movies_app/features/movies/data/models/genre_model.dart';
+import 'package:movies_app/features/movies/data/models/genre_response_model.dart';
 import 'package:movies_app/features/movies/data/models/movie_model.dart';
+import 'package:movies_app/features/movies/data/models/movie_response_model.dart';
 import 'package:movies_app/features/movies/data/repositories/movies_repository_impl.dart';
 
 @GenerateNiceMocks([
@@ -57,8 +59,9 @@ void main() {
     });
   }
 
-  group('getPopularMovies', () {
-    const tMovieModels = [
+  const tMovieResponseModel = MovieResponseModel(
+    page: 1,
+    results: [
       MovieModel(
         id: 1,
         originalTitle: 'Test',
@@ -67,8 +70,11 @@ void main() {
         title: 'Test',
         voteAverage: 1,
       ),
-    ];
+    ],
+    totalPages: 1,
+  );
 
+  group('getPopularMovies', () {
     test(
       'should check if the device is online',
       () async {
@@ -89,14 +95,14 @@ void main() {
         () async {
           // arrange
           when(mockRemoteDataSource.getPopularMovies())
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           final result = await repository.getPopularMovies();
 
           // assert
           verify(mockRemoteDataSource.getPopularMovies());
-          expect(result, equals(const Right(tMovieModels)));
+          expect(result, equals(const Right(tMovieResponseModel)));
         },
       );
 
@@ -105,14 +111,14 @@ void main() {
         () async {
           // arrange
           when(mockRemoteDataSource.getPopularMovies())
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           await repository.getPopularMovies();
 
           // assert
           verify(mockRemoteDataSource.getPopularMovies());
-          verify(mockLocalDataSource.cacheMovies(tMovieModels));
+          verify(mockLocalDataSource.cacheMovies(tMovieResponseModel));
         },
       );
 
@@ -156,7 +162,7 @@ void main() {
         () async {
           // arrange
           when(mockLocalDataSource.getLastMovies())
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           final result = await repository.getPopularMovies();
@@ -164,24 +170,13 @@ void main() {
           // assert
           verifyZeroInteractions(mockRemoteDataSource);
           verify(mockLocalDataSource.getLastMovies());
-          expect(result, const Right(tMovieModels));
+          expect(result, const Right(tMovieResponseModel));
         },
       );
     });
   });
 
   group('getPopularMovies', () {
-    const tMovieModels = [
-      MovieModel(
-        id: 1,
-        originalTitle: 'Test',
-        overview: 'Test',
-        posterPath: 'Test',
-        title: 'Test',
-        voteAverage: 1,
-      ),
-    ];
-
     test(
       'should check if the device is online',
       () async {
@@ -202,14 +197,14 @@ void main() {
         () async {
           // arrange
           when(mockRemoteDataSource.getPopularMovies())
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           final result = await repository.getPopularMovies();
 
           // assert
           verify(mockRemoteDataSource.getPopularMovies());
-          expect(result, equals(const Right(tMovieModels)));
+          expect(result, equals(const Right(tMovieResponseModel)));
         },
       );
 
@@ -218,14 +213,14 @@ void main() {
         () async {
           // arrange
           when(mockRemoteDataSource.getPopularMovies())
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           await repository.getPopularMovies();
 
           // assert
           verify(mockRemoteDataSource.getPopularMovies());
-          verify(mockLocalDataSource.cacheMovies(tMovieModels));
+          verify(mockLocalDataSource.cacheMovies(tMovieResponseModel));
         },
       );
 
@@ -253,7 +248,7 @@ void main() {
         () async {
           // arrange
           when(mockLocalDataSource.getLastMovies())
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           final result = await repository.getPopularMovies();
@@ -261,7 +256,7 @@ void main() {
           // assert
           verifyZeroInteractions(mockRemoteDataSource);
           verify(mockLocalDataSource.getLastMovies());
-          expect(result, const Right(tMovieModels));
+          expect(result, const Right(tMovieResponseModel));
         },
       );
 
@@ -284,7 +279,9 @@ void main() {
   });
 
   group('getMovieGenres', () {
-    const tGenreModels = [GenreModel(id: 1, name: 'Test')];
+    const tGenreResponseModel = GenreResponseModel(
+      genres: [GenreModel(id: 1, name: 'Test')],
+    );
 
     test(
       'should check if the device is online',
@@ -306,14 +303,14 @@ void main() {
         () async {
           // arrange
           when(mockRemoteDataSource.getMovieGenres())
-              .thenAnswer((_) async => tGenreModels);
+              .thenAnswer((_) async => tGenreResponseModel);
 
           // act
           final result = await repository.getMovieGenres();
 
           // assert
           verify(mockRemoteDataSource.getMovieGenres());
-          expect(result, equals(const Right(tGenreModels)));
+          expect(result, equals(const Right(tGenreResponseModel)));
         },
       );
 
@@ -322,14 +319,14 @@ void main() {
         () async {
           // arrange
           when(mockRemoteDataSource.getMovieGenres())
-              .thenAnswer((_) async => tGenreModels);
+              .thenAnswer((_) async => tGenreResponseModel);
 
           // act
           await repository.getMovieGenres();
 
           // assert
           verify(mockRemoteDataSource.getMovieGenres());
-          verify(mockLocalDataSource.cacheGenres(tGenreModels));
+          verify(mockLocalDataSource.cacheGenres(tGenreResponseModel));
         },
       );
 
@@ -357,7 +354,7 @@ void main() {
         () async {
           // arrange
           when(mockLocalDataSource.getLastGenres())
-              .thenAnswer((_) async => tGenreModels);
+              .thenAnswer((_) async => tGenreResponseModel);
 
           // act
           final result = await repository.getMovieGenres();
@@ -365,7 +362,7 @@ void main() {
           // assert
           verifyZeroInteractions(mockRemoteDataSource);
           verify(mockLocalDataSource.getLastGenres());
-          expect(result, const Right(tGenreModels));
+          expect(result, const Right(tGenreResponseModel));
         },
       );
 
@@ -390,17 +387,6 @@ void main() {
   group('getMoviesByGenre', () {
     const tGenreId = 1;
 
-    const tMovieModels = [
-      MovieModel(
-        id: 1,
-        originalTitle: 'Test',
-        overview: 'Test',
-        posterPath: 'Test',
-        title: 'Test',
-        voteAverage: 1,
-      ),
-    ];
-
     test(
       'should check if the device is online',
       () async {
@@ -421,14 +407,14 @@ void main() {
         () async {
           // arrange
           when(mockRemoteDataSource.getMoviesByGenre(any))
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           final result = await repository.getMoviesByGenre(tGenreId);
 
           // assert
           verify(mockRemoteDataSource.getMoviesByGenre(tGenreId));
-          expect(result, equals(const Right(tMovieModels)));
+          expect(result, equals(const Right(tMovieResponseModel)));
         },
       );
 
@@ -437,14 +423,14 @@ void main() {
         () async {
           // arrange
           when(mockRemoteDataSource.getMoviesByGenre(any))
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           await repository.getMoviesByGenre(tGenreId);
 
           // assert
           verify(mockRemoteDataSource.getMoviesByGenre(tGenreId));
-          verify(mockLocalDataSource.cacheMovies(tMovieModels));
+          verify(mockLocalDataSource.cacheMovies(tMovieResponseModel));
         },
       );
 
@@ -472,7 +458,7 @@ void main() {
         () async {
           // arrange
           when(mockLocalDataSource.getLastMovies())
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           final result = await repository.getMoviesByGenre(tGenreId);
@@ -480,7 +466,7 @@ void main() {
           // assert
           verifyZeroInteractions(mockRemoteDataSource);
           verify(mockLocalDataSource.getLastMovies());
-          expect(result, const Right(tMovieModels));
+          expect(result, const Right(tMovieResponseModel));
         },
       );
 
@@ -505,17 +491,6 @@ void main() {
   group('getMoviesByTitle', () {
     const tTitle = 'Test';
 
-    const tMovieModels = [
-      MovieModel(
-        id: 1,
-        originalTitle: 'Test',
-        overview: 'Test',
-        posterPath: 'Test',
-        title: 'Test',
-        voteAverage: 1,
-      ),
-    ];
-
     test(
       'should check if the device is online',
       () async {
@@ -536,14 +511,14 @@ void main() {
         () async {
           // arrange
           when(mockRemoteDataSource.getMoviesByTitle(any))
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           final result = await repository.getMoviesByTitle(tTitle);
 
           // assert
           verify(mockRemoteDataSource.getMoviesByTitle(tTitle));
-          expect(result, equals(const Right(tMovieModels)));
+          expect(result, equals(const Right(tMovieResponseModel)));
         },
       );
 
@@ -552,14 +527,14 @@ void main() {
         () async {
           // arrange
           when(mockRemoteDataSource.getMoviesByTitle(any))
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           await repository.getMoviesByTitle(tTitle);
 
           // assert
           verify(mockRemoteDataSource.getMoviesByTitle(tTitle));
-          verify(mockLocalDataSource.cacheMovies(tMovieModels));
+          verify(mockLocalDataSource.cacheMovies(tMovieResponseModel));
         },
       );
 
@@ -587,7 +562,7 @@ void main() {
         () async {
           // arrange
           when(mockLocalDataSource.getLastMovies())
-              .thenAnswer((_) async => tMovieModels);
+              .thenAnswer((_) async => tMovieResponseModel);
 
           // act
           final result = await repository.getMoviesByTitle(tTitle);
@@ -595,7 +570,7 @@ void main() {
           // assert
           verifyZeroInteractions(mockRemoteDataSource);
           verify(mockLocalDataSource.getLastMovies());
-          expect(result, const Right(tMovieModels));
+          expect(result, const Right(tMovieResponseModel));
         },
       );
 

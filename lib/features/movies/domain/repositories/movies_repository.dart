@@ -1,15 +1,15 @@
 import 'package:dartz/dartz.dart';
 
 import 'package:movies_app/core/error/failures.dart';
-import 'package:movies_app/features/movies/domain/entities/genre.dart';
-import 'package:movies_app/features/movies/domain/entities/movie.dart';
+import 'package:movies_app/features/movies/domain/entities/genre_response.dart';
+import 'package:movies_app/features/movies/domain/entities/movie_response.dart';
 
 abstract class MoviesRepository {
-  Future<Either<Failure, List<Movie>>> getPopularMovies();
+  Future<Either<Failure, MovieResponse>> getPopularMovies();
 
-  Future<Either<Failure, List<Genre>>> getMovieGenres();
+  Future<Either<Failure, GenreResponse>> getMovieGenres();
 
-  Future<Either<Failure, List<Movie>>> getMoviesByGenre(int genreId);
+  Future<Either<Failure, MovieResponse>> getMoviesByGenre(int genreId);
 
-  Future<Either<Failure, List<Movie>>> getMoviesByTitle(String title);
+  Future<Either<Failure, MovieResponse>> getMoviesByTitle(String title);
 }

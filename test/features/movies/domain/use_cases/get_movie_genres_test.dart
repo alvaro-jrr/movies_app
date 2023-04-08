@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 
 import 'package:movies_app/core/use_cases/use_case.dart';
 import 'package:movies_app/features/movies/domain/entities/genre.dart';
+import 'package:movies_app/features/movies/domain/entities/genre_response.dart';
 import 'package:movies_app/features/movies/domain/repositories/movies_repository.dart';
 import 'package:movies_app/features/movies/domain/use_cases/get_movie_genres.dart';
 
@@ -20,21 +21,21 @@ void main() {
     useCase = GetMovieGenres(mockMoviesRepository);
   });
 
-  const tGenres = [Genre(id: 1, name: 'Test')];
+  const tGenreResponse = GenreResponse(genres: [Genre(id: 1, name: 'Test')]);
 
   test(
     'should get movie genres from the repository',
     () async {
       // arrange
       when(mockMoviesRepository.getMovieGenres())
-          .thenAnswer((_) async => const Right(tGenres));
+          .thenAnswer((_) async => const Right(tGenreResponse));
 
       // act
       final result = await useCase(NoParams());
 
       // assert
       verify(mockMoviesRepository.getMovieGenres());
-      expect(result, const Right(tGenres));
+      expect(result, const Right(tGenreResponse));
       verifyNoMoreInteractions(mockMoviesRepository);
     },
   );

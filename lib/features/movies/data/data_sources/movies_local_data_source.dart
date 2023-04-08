@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
+import 'package:movies_app/features/movies/data/models/genre_response_model.dart';
+import 'package:movies_app/features/movies/data/models/movie_response_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:movies_app/core/error/exceptions.dart';
@@ -12,19 +14,19 @@ abstract class MoviesLocalDataSource {
   /// the user had an internet connection.
   ///
   /// Throws a [CacheException] if no cached data is present.
-  Future<List<MovieModel>> getLastMovies();
+  Future<MovieResponseModel> getLastMovies();
 
   /// Gets the cached [GenreModel] list which was gotten the last time
   /// the user had an internet connection.
   ///
   /// Throws a [CacheException] if no cached data is present.
-  Future<List<GenreModel>> getLastGenres();
+  Future<GenreResponseModel> getLastGenres();
 
   /// Stores the movies in cache.
-  Future<void> cacheMovies(List<MovieModel> moviesToCache);
+  Future<void> cacheMovies(MovieResponseModel moviesToCache);
 
   /// Stores the genres in cache.
-  Future<void> cacheGenres(List<GenreModel> genresToCache);
+  Future<void> cacheGenres(GenreResponseModel genresToCache);
 }
 
 const cachedMoviesKey = 'MOVIES';
@@ -36,34 +38,30 @@ class MoviesLocalDataSourceImpl implements MoviesLocalDataSource {
   MoviesLocalDataSourceImpl(this.sharedPreferences);
 
   @override
-  Future<List<MovieModel>> getLastMovies() {
-    final jsonList = _getCachedJsonList(cachedMoviesKey);
+  Future<MovieResponseModel> getLastMovies() {
+    final json = _getCachedJson(cachedMoviesKey);
 
-    // Turn each json to a MovieModel list.
-    final movies = jsonList.map((json) => MovieModel.fromJson(json)).toList();
-    return Future.value(movies);
+    return Future.value(MovieResponseModel.fromJson(json));
   }
 
   @override
-  Future<List<GenreModel>> getLastGenres() {
-    final jsonList = _getCachedJsonList(cachedGenresKey);
+  Future<GenreResponseModel> getLastGenres() {
+    final json = _getCachedJson(cachedGenresKey);
 
-    // Turn each json to a GenreModel list.
-    final genres = jsonList.map((json) => GenreModel.fromJson(json)).toList();
-    return Future.value(genres);
+    return Future.value(GenreResponseModel.fromJson(json));
   }
 
   @override
-  Future<void> cacheMovies(List<MovieModel> moviesToCache) {
+  Future<void> cacheMovies(MovieResponseModel moviesToCache) {
     return _eitherCacheMoviesOrGenres(Left(moviesToCache));
   }
 
   @override
-  Future<void> cacheGenres(List<GenreModel> genresToCache) {
+  Future<void> cacheGenres(GenreResponseModel genresToCache) {
     return _eitherCacheMoviesOrGenres(Right(genresToCache));
   }
 
-  List<dynamic> _getCachedJsonList(String cacheKey) {
+  Map<String, dynamic> _getCachedJson(String cacheKey) {
     // Get the json.
     final jsonString = sharedPreferences.getString(cacheKey);
 
@@ -73,18 +71,18 @@ class MoviesLocalDataSourceImpl implements MoviesLocalDataSource {
   }
 
   Future<void> _eitherCacheMoviesOrGenres(
-    Either<List<MovieModel>, List<GenreModel>> modelEither,
+    Either<MovieResponseModel, GenreResponseModel> modelEither,
   ) async {
     late String cacheKey;
 
     final jsonString = modelEither.fold(
       (movies) {
         cacheKey = cachedMoviesKey;
-        return jsonEncode(movies.map((movie) => movie.toJson()).toList());
+        return jsonEncode(movies.toJson());
       },
       (genres) {
         cacheKey = cachedGenresKey;
-        return jsonEncode(genres.map((genre) => genre.toJson()).toList());
+        return jsonEncode(genres.toJson());
       },
     );
 

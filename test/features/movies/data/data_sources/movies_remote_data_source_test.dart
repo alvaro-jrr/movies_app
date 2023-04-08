@@ -4,11 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
-import 'package:movies_app/core/error/exceptions.dart';
 
+import 'package:movies_app/core/error/exceptions.dart';
 import 'package:movies_app/features/movies/data/data_sources/movies_remote_data_source.dart';
-import 'package:movies_app/features/movies/data/models/genre_model.dart';
-import 'package:movies_app/features/movies/data/models/movie_model.dart';
+import 'package:movies_app/features/movies/data/models/genre_response_model.dart';
+import 'package:movies_app/features/movies/data/models/movie_response_model.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 @GenerateNiceMocks([MockSpec<http.Client>()])
@@ -23,11 +23,8 @@ void main() {
     dataSourceImpl = MoviesRemoteDataSourceImpl(client: mockClient);
   });
 
-  final List<dynamic> tJsonMovieList =
-      jsonDecode(fixture('movies.json'))['results'];
-
-  final tMovieModels =
-      tJsonMovieList.map((json) => MovieModel.fromJson(json)).toList();
+  final tMovieJson = jsonDecode(fixture('movies_response.json'));
+  final tMovieResponseModel = MovieResponseModel.fromJson(tMovieJson);
 
   group('getPopularMovies', () {
     test(
@@ -36,7 +33,7 @@ void main() {
       () async {
         // arrange
         when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-            (_) async => http.Response(fixture('movies.json'), 200));
+            (_) async => http.Response(fixture('movies_response.json'), 200));
 
         // act
         await dataSourceImpl.getPopularMovies();
@@ -56,17 +53,17 @@ void main() {
     );
 
     test(
-      'should return a MovieModel list when the status code is 200 (success)',
+      'should return a MovieResponse when the status code is 200 (success)',
       () async {
         // arrange
         when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-            (_) async => http.Response(fixture('movies.json'), 200));
+            (_) async => http.Response(fixture('movies_response.json'), 200));
 
         // act
         final result = await dataSourceImpl.getPopularMovies();
 
         // assert
-        expect(result, tMovieModels);
+        expect(result, tMovieResponseModel);
       },
     );
 
@@ -87,10 +84,9 @@ void main() {
   });
 
   group('getMovieGenres', () {
-    final List<dynamic> tJsonGenresList =
-        jsonDecode(fixture('genres.json'))['genres'];
-    final tGenreModels =
-        tJsonGenresList.map((json) => GenreModel.fromJson(json)).toList();
+    final Map<String, dynamic> tGenreJson =
+        jsonDecode(fixture('genres_cached.json'));
+    final tGenreResponseModel = GenreResponseModel.fromJson(tGenreJson);
 
     test(
       '''should perform a GET request on a URL with the API Key 
@@ -98,7 +94,7 @@ void main() {
       () async {
         // arrange
         when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-            (_) async => http.Response(fixture('genres.json'), 200));
+            (_) async => http.Response(fixture('genres_response.json'), 200));
 
         // act
         await dataSourceImpl.getMovieGenres();
@@ -118,17 +114,17 @@ void main() {
     );
 
     test(
-      'should return a GenreModel list when the status code is 200 (success)',
+      'should return a GenreResponse when the status code is 200 (success)',
       () async {
         // arrange
         when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-            (_) async => http.Response(fixture('genres.json'), 200));
+            (_) async => http.Response(fixture('genres_response.json'), 200));
 
         // act
         final result = await dataSourceImpl.getMovieGenres();
 
         // assert
-        expect(result, tGenreModels);
+        expect(result, tGenreResponseModel);
       },
     );
 
@@ -158,7 +154,7 @@ void main() {
       () async {
         // arrange
         when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-            (_) async => http.Response(fixture('movies.json'), 200));
+            (_) async => http.Response(fixture('movies_response.json'), 200));
 
         // act
         await dataSourceImpl.getMoviesByGenre(tGenreId);
@@ -179,17 +175,17 @@ void main() {
     );
 
     test(
-      'should return a MovieModel list when the status code is 200 (success)',
+      'should return a MovieResponse when the status code is 200 (success)',
       () async {
         // arrange
         when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-            (_) async => http.Response(fixture('movies.json'), 200));
+            (_) async => http.Response(fixture('movies_response.json'), 200));
 
         // act
         final result = await dataSourceImpl.getMoviesByGenre(tGenreId);
 
         // assert
-        expect(result, tMovieModels);
+        expect(result, tMovieResponseModel);
       },
     );
 
@@ -222,7 +218,7 @@ void main() {
       () async {
         // arrange
         when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-            (_) async => http.Response(fixture('movies.json'), 200));
+            (_) async => http.Response(fixture('movies_response.json'), 200));
 
         // act
         await dataSourceImpl.getMoviesByTitle(tTitle);
@@ -243,17 +239,17 @@ void main() {
     );
 
     test(
-      'should return a MovieModel list when the status code is 200 (success)',
+      'should return a MovieResponse when the status code is 200 (success)',
       () async {
         // arrange
         when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-            (_) async => http.Response(fixture('movies.json'), 200));
+            (_) async => http.Response(fixture('movies_response.json'), 200));
 
         // act
         final result = await dataSourceImpl.getMoviesByTitle(tTitle);
 
         // assert
-        expect(result, tMovieModels);
+        expect(result, tMovieResponseModel);
       },
     );
 

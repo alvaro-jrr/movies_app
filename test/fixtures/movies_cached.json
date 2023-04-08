@@ -1,11 +1,15 @@
-[
-	{
-		"id": 1,
-		"original_title": "Test",
-		"overview": "Test",
-		"poster_path": "Test",
-		"release_date": "2022-12-14",
-		"title": "Test",
-		"vote_average": 1.0
-	}
-]
+{
+	"page": 1,
+	"results": [
+		{
+			"id": 1,
+			"original_title": "Test",
+			"overview": "Test",
+			"poster_path": "Test",
+			"release_date": "2022-12-14",
+			"title": "Test",
+			"vote_average": 1.0
+		}
+	],
+	"total_pages": 1
+}

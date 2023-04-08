@@ -4,6 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:movies_app/features/movies/domain/entities/movie.dart';
+import 'package:movies_app/features/movies/domain/entities/movie_response.dart';
 import 'package:movies_app/features/movies/domain/repositories/movies_repository.dart';
 import 'package:movies_app/features/movies/domain/use_cases/get_movies_by_genre.dart';
 
@@ -19,16 +20,20 @@ void main() {
     useCase = GetMoviesByGenre(mockMoviesRepository);
   });
 
-  const tMoviesByGenre = [
-    Movie(
-      id: 1,
-      originalTitle: 'Test',
-      overview: 'Test',
-      posterPath: 'Test',
-      title: 'Test',
-      voteAverage: 1,
-    ),
-  ];
+  const tMovieResponse = MovieResponse(
+    page: 1,
+    results: [
+      Movie(
+        id: 1,
+        originalTitle: 'Test',
+        overview: 'Test',
+        posterPath: 'Test',
+        title: 'Test',
+        voteAverage: 1,
+      ),
+    ],
+    totalPages: 1,
+  );
 
   const tGenreId = 1;
 
@@ -37,14 +42,14 @@ void main() {
     () async {
       // arrange
       when(mockMoviesRepository.getMoviesByGenre(any))
-          .thenAnswer((_) async => const Right(tMoviesByGenre));
+          .thenAnswer((_) async => const Right(tMovieResponse));
 
       // act
       final result = await useCase(const Params(id: tGenreId));
 
       // assert
       verify(mockMoviesRepository.getMoviesByGenre(tGenreId));
-      expect(result, const Right(tMoviesByGenre));
+      expect(result, const Right(tMovieResponse));
       verifyNoMoreInteractions(mockMoviesRepository);
     },
   );

@@ -5,12 +5,12 @@ import 'package:movies_app/core/error/failures.dart';
 import 'package:movies_app/core/network/network_info.dart';
 import 'package:movies_app/features/movies/data/data_sources/movies_local_data_source.dart';
 import 'package:movies_app/features/movies/data/data_sources/movies_remote_data_source.dart';
-import 'package:movies_app/features/movies/data/models/movie_model.dart';
-import 'package:movies_app/features/movies/domain/entities/genre.dart';
-import 'package:movies_app/features/movies/domain/entities/movie.dart';
+import 'package:movies_app/features/movies/data/models/movie_response_model.dart';
+import 'package:movies_app/features/movies/domain/entities/genre_response.dart';
+import 'package:movies_app/features/movies/domain/entities/movie_response.dart';
 import 'package:movies_app/features/movies/domain/repositories/movies_repository.dart';
 
-typedef _MoviesChooser = Future<List<MovieModel>> Function();
+typedef _MoviesChooser = Future<MovieResponseModel> Function();
 
 class MoviesRepositoryImpl implements MoviesRepository {
   final MoviesLocalDataSource localDataSource;
@@ -24,12 +24,12 @@ class MoviesRepositoryImpl implements MoviesRepository {
   });
 
   @override
-  Future<Either<Failure, List<Movie>>> getPopularMovies() async {
+  Future<Either<Failure, MovieResponse>> getPopularMovies() async {
     return _getMovies(() => remoteDataSource.getPopularMovies());
   }
 
   @override
-  Future<Either<Failure, List<Genre>>> getMovieGenres() async {
+  Future<Either<Failure, GenreResponse>> getMovieGenres() async {
     final isConnected = await networkInfo.isConnected;
 
     if (!isConnected) {
@@ -51,16 +51,16 @@ class MoviesRepositoryImpl implements MoviesRepository {
   }
 
   @override
-  Future<Either<Failure, List<Movie>>> getMoviesByGenre(int genreId) async {
+  Future<Either<Failure, MovieResponse>> getMoviesByGenre(int genreId) async {
     return _getMovies(() => remoteDataSource.getMoviesByGenre(genreId));
   }
 
   @override
-  Future<Either<Failure, List<Movie>>> getMoviesByTitle(String title) async {
+  Future<Either<Failure, MovieResponse>> getMoviesByTitle(String title) async {
     return _getMovies(() => remoteDataSource.getMoviesByTitle(title));
   }
 
-  Future<Either<Failure, List<Movie>>> _getMovies(
+  Future<Either<Failure, MovieResponse>> _getMovies(
     _MoviesChooser getFilteredMovies,
   ) async {
     final isConnected = await networkInfo.isConnected;

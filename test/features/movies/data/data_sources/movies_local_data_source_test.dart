@@ -3,18 +3,14 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:movies_app/core/env/env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:movies_app/features/movies/data/models/genre_response_model.dart';
+import 'package:movies_app/features/movies/data/models/movie_response_model.dart';
 import 'package:movies_app/core/error/exceptions.dart';
 import 'package:movies_app/features/movies/data/data_sources/movies_local_data_source.dart';
-import 'package:movies_app/features/movies/data/models/genre_model.dart';
-import 'package:movies_app/features/movies/data/models/movie_model.dart';
 
-@GenerateNiceMocks([
-  MockSpec<SharedPreferences>(),
-  MockSpec<Env>(),
-])
+@GenerateNiceMocks([MockSpec<SharedPreferences>()])
 import 'movies_local_data_source_test.mocks.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
@@ -28,12 +24,16 @@ void main() {
     dataSourceImpl = MoviesLocalDataSourceImpl(mockSharedPreferences);
   });
 
-  group('getLastMovies', () {
-    final List<dynamic> tJson = jsonDecode(fixture('movies_cached.json'));
-    final tMovieModels = tJson.map((e) => MovieModel.fromJson(e)).toList();
+  final tMovieJson = jsonDecode(fixture('movies_cached.json'));
+  final tMovieResponseModel = MovieResponseModel.fromJson(tMovieJson);
 
+  final Map<String, dynamic> tGenreJson =
+      jsonDecode(fixture('genres_cached.json'));
+  final tGenreResponseModel = GenreResponseModel.fromJson(tGenreJson);
+
+  group('getLastMovies', () {
     test(
-      'should return a MovieModel list from SharedPreferences when there is one in the cache',
+      'should return a MovieResponse from SharedPreferences when there is one in the cache',
       () async {
         // arrange
         when(mockSharedPreferences.getString(any))
@@ -44,7 +44,7 @@ void main() {
 
         // assert
         verify(mockSharedPreferences.getString(cachedMoviesKey));
-        expect(result, tMovieModels);
+        expect(result, tMovieResponseModel);
       },
     );
 
@@ -64,26 +64,14 @@ void main() {
   });
 
   group('cacheMovies', () {
-    const tMovieModels = [
-      MovieModel(
-        id: 1,
-        originalTitle: 'Test',
-        overview: 'Test',
-        posterPath: 'Test',
-        title: 'Test',
-        voteAverage: 1.0,
-      ),
-    ];
-
     test(
       'should call SharedPreferences to cache the data',
       () async {
         // act
-        dataSourceImpl.cacheMovies(tMovieModels);
+        dataSourceImpl.cacheMovies(tMovieResponseModel);
 
         // assert
-        final expectedJsonString =
-            jsonEncode(tMovieModels.map((e) => e.toJson()).toList());
+        final expectedJsonString = jsonEncode(tMovieResponseModel.toJson());
 
         verify(mockSharedPreferences.setString(
           cachedMoviesKey,
@@ -94,11 +82,8 @@ void main() {
   });
 
   group('getLastGenres', () {
-    final List<dynamic> tJson = jsonDecode(fixture('genres_cached.json'));
-    final tGenreModels = tJson.map((e) => GenreModel.fromJson(e)).toList();
-
     test(
-      'should return a GenreModel list from SharedPreferences when there is one in the cache',
+      'should return a GenreResponse list from SharedPreferences when there is one in the cache',
       () async {
         // arrange
         when(mockSharedPreferences.getString(any))
@@ -109,7 +94,7 @@ void main() {
 
         // assert
         verify(mockSharedPreferences.getString(cachedGenresKey));
-        expect(result, tGenreModels);
+        expect(result, tGenreResponseModel);
       },
     );
 
@@ -129,17 +114,14 @@ void main() {
   });
 
   group('cacheGenres', () {
-    const tGenreModels = [GenreModel(id: 1, name: 'Test')];
-
     test(
       'should call SharedPreferences to cache the data',
       () async {
         // act
-        dataSourceImpl.cacheGenres(tGenreModels);
+        dataSourceImpl.cacheGenres(tGenreResponseModel);
 
         // assert
-        final expectedJsonString =
-            jsonEncode(tGenreModels.map((e) => e.toJson()).toList());
+        final expectedJsonString = jsonEncode(tGenreResponseModel.toJson());
 
         verify(mockSharedPreferences.setString(
           cachedGenresKey,

@@ -1,22 +1,20 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
-import 'package:movies_app/features/movies/data/models/genre_response_model.dart';
-import 'package:movies_app/features/movies/data/models/movie_response_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:movies_app/core/error/exceptions.dart';
-import 'package:movies_app/features/movies/data/models/genre_model.dart';
-import 'package:movies_app/features/movies/data/models/movie_model.dart';
+import 'package:movies_app/features/movies/data/models/genre_response_model.dart';
+import 'package:movies_app/features/movies/data/models/movie_response_model.dart';
 
 abstract class MoviesLocalDataSource {
-  /// Gets the cached [MovieModel] list which was gotten the last time
+  /// Gets the cached [MovieResponseModel] which was gotten the last time
   /// the user had an internet connection.
   ///
   /// Throws a [CacheException] if no cached data is present.
   Future<MovieResponseModel> getLastMovies();
 
-  /// Gets the cached [GenreModel] list which was gotten the last time
+  /// Gets the cached [GenreResponseModel] which was gotten the last time
   /// the user had an internet connection.
   ///
   /// Throws a [CacheException] if no cached data is present.

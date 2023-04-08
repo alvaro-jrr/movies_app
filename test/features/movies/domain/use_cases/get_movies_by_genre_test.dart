@@ -45,7 +45,7 @@ void main() {
           .thenAnswer((_) async => const Right(tMovieResponse));
 
       // act
-      final result = await useCase(const Params(id: tGenreId));
+      final result = await useCase(const GetMoviesByGenreParams(id: tGenreId));
 
       // assert
       verify(mockMoviesRepository.getMoviesByGenre(tGenreId));

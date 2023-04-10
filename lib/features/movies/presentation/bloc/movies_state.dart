@@ -11,6 +11,19 @@ class Empty extends MoviesState {}
 
 class Loading extends MoviesState {}
 
+class Loaded extends MoviesState {
+  final MovieResponse movieResponse;
+  final GenreResponse genreResponse;
+
+  const Loaded({
+    required this.movieResponse,
+    required this.genreResponse,
+  });
+
+  @override
+  List<Object> get props => [movieResponse, genreResponse];
+}
+
 class LoadedMovies extends MoviesState {
   final MovieResponse movieResponse;
 

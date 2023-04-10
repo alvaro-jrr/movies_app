@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:movies_app/features/movies/domain/entities/movie.dart';
+import 'package:movies_app/features/movies/domain/entities/genre.dart';
 import 'package:movies_app/features/movies/presentation/bloc/movies_bloc.dart';
 import 'package:movies_app/features/movies/presentation/widgets/widgets.dart';
 
@@ -23,10 +25,54 @@ class HomePage extends StatelessWidget {
 class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<MoviesBloc, MoviesState>(
+      builder: (context, state) {
+        if (state is Loading) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (state is Error) {
+          return Center(
+            child: Text(state.message),
+          );
+        }
+
+        if (state is Loaded) {
+          final movies = state.movieResponse.results;
+          final genres = state.genreResponse.genres;
+
+          return _Content(movies: movies, genres: genres);
+        }
+
+        addPopularAndMovieGenres(context);
+        return Container();
+      },
+    );
+  }
+
+  void addPopularAndMovieGenres(BuildContext context) {
+    BlocProvider.of<MoviesBloc>(context).add(GetPopularAndMovieGenres());
+  }
+}
+
+class _Content extends StatelessWidget {
+  const _Content({
+    required this.movies,
+    required this.genres,
+  });
+
+  final List<Movie> movies;
+  final List<Genre> genres;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         // Header.
-        _Header(),
+        MovieSwiper(movies: movies.sublist(0, 5)),
         const SizedBox(height: 24),
         // Search.
         const Padding(
@@ -35,49 +81,11 @@ class _Body extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         // Categories.
-        const Placeholder(fallbackHeight: 48),
+        MovieGenres(genres: genres),
         const SizedBox(height: 24),
         // Movies.
         const Placeholder(fallbackHeight: 600),
       ],
     );
-  }
-}
-
-class _Header extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    return SizedBox(
-      height: size.height * 0.6,
-      width: double.infinity,
-      child: BlocBuilder<MoviesBloc, MoviesState>(
-        builder: (context, state) {
-          if (state is Loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state is Error) {
-            return Center(child: Text(state.message));
-          }
-
-          if (state is LoadedMovies) {
-            final movies = state.movieResponse.results.sublist(0, 5);
-
-            return MovieSwiper(movies: movies);
-          }
-
-          // Start loading process.
-          addPopularMovies(context);
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
-    );
-  }
-
-  void addPopularMovies(BuildContext context) {
-    BlocProvider.of<MoviesBloc>(context, listen: false)
-        .add(GetMoviesFromPopulars());
   }
 }

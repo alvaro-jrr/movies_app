@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:movies_app/core/error/failures.dart';
 import 'package:movies_app/core/use_cases/use_case.dart';
 import 'package:movies_app/features/movies/domain/entities/genre_response.dart';
@@ -28,6 +28,25 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     required this.getMoviesByGenre,
     required this.getMoviesByTitle,
   }) : super(Empty()) {
+    on<GetPopularAndMovieGenres>((event, emit) async {
+      emit(Loading());
+
+      final movieResponse = await getPopularMovies(NoParams());
+      final genreResponse = await getMovieGenres(NoParams());
+
+      emit(
+        movieResponse.fold(
+          (failure) => Error(message: _mapFailureToMessage(failure)),
+          (movie) {
+            return genreResponse.fold(
+              (failure) => Error(message: _mapFailureToMessage(failure)),
+              (genre) => Loaded(movieResponse: movie, genreResponse: genre),
+            );
+          },
+        ),
+      );
+    });
+
     on<GetMoviesFromPopulars>((event, emit) async {
       emit(Loading());
 

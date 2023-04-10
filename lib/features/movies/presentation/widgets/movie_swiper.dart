@@ -13,19 +13,25 @@ class MovieSwiper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Swiper(
-      itemCount: movies.length,
-      itemBuilder: (context, index) => _MovieCard(movies[index]),
-      autoplay: true,
-      pagination: SwiperPagination(
-        alignment: Alignment.bottomRight,
-        margin: const EdgeInsets.all(24),
-        builder: DotSwiperPaginationBuilder(
-          activeColor: Colors.white,
-          size: 8,
-          activeSize: 8,
-          color: Colors.white.withOpacity(0.5),
-          space: 4,
+    final size = MediaQuery.of(context).size;
+
+    return SizedBox(
+      height: size.height * 0.6,
+      width: double.infinity,
+      child: Swiper(
+        itemCount: movies.length,
+        itemBuilder: (context, index) => _MovieCard(movies[index]),
+        autoplay: true,
+        pagination: SwiperPagination(
+          alignment: Alignment.bottomRight,
+          margin: const EdgeInsets.all(24),
+          builder: DotSwiperPaginationBuilder(
+            activeColor: Colors.white,
+            size: 8,
+            activeSize: 8,
+            color: Colors.white.withOpacity(0.5),
+            space: 4,
+          ),
         ),
       ),
     );

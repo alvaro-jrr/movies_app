@@ -67,6 +67,129 @@ void main() {
     totalPages: 1,
   );
 
+  const tGenreResponse = GenreResponse(
+    genres: [
+      Genre(id: 1, name: 'Test'),
+    ],
+  );
+
+  group('GetPopularAndMovieGenres', () {
+    test(
+      'should get data from populars and genres',
+      () async {
+        // arrange
+        when(mockGetPopularMovies(any))
+            .thenAnswer((_) async => const Right(tMovieResponse));
+
+        when(mockGetMovieGenres(any))
+            .thenAnswer((_) async => const Right(tGenreResponse));
+
+        // act
+        bloc.add(GetPopularAndMovieGenres());
+        await untilCalled(mockGetPopularMovies(any));
+        await untilCalled(mockGetMovieGenres(any));
+
+        // assert
+        verify(mockGetPopularMovies(NoParams()));
+        verify(mockGetMovieGenres(NoParams()));
+      },
+    );
+    test(
+      'should emit [Loading, Loaded] when data is gotten successfully',
+      () async {
+        // arrange
+        when(mockGetPopularMovies(any))
+            .thenAnswer((_) async => const Right(tMovieResponse));
+
+        when(mockGetMovieGenres(any))
+            .thenAnswer((_) async => const Right(tGenreResponse));
+
+        // assert later
+        final expected = [
+          Loading(),
+          const Loaded(
+            movieResponse: tMovieResponse,
+            genreResponse: tGenreResponse,
+          ),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(GetPopularAndMovieGenres());
+      },
+    );
+
+    test(
+      'should emit [Loading, Error] when getting data fails',
+      () async {
+        // arrange
+        when(mockGetPopularMovies(any))
+            .thenAnswer((_) async => Left(ServerFailure()));
+
+        when(mockGetMovieGenres(any))
+            .thenAnswer((_) async => Left(ServerFailure()));
+
+        // assert later
+        final expected = [
+          Loading(),
+          const Error(message: serverFailureMessage),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(GetPopularAndMovieGenres());
+      },
+    );
+
+    test(
+      'should emit [Loading, Error] with a proper message when getting data fails',
+      () async {
+        // arrange
+        when(mockGetPopularMovies(any))
+            .thenAnswer((_) async => Left(CacheFailure()));
+
+        when(mockGetMovieGenres(any))
+            .thenAnswer((_) async => Left(CacheFailure()));
+
+        // assert later
+        final expected = [
+          Loading(),
+          const Error(message: cacheFailureMessage),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(GetPopularAndMovieGenres());
+      },
+    );
+
+    test(
+      'should emit [Loading, Error] when any getting data fails',
+      () async {
+        // arrange
+        when(mockGetPopularMovies(any))
+            .thenAnswer((_) async => const Right(tMovieResponse));
+
+        when(mockGetMovieGenres(any))
+            .thenAnswer((_) async => Left(CacheFailure()));
+
+        // assert later
+        final expected = [
+          Loading(),
+          const Error(message: cacheFailureMessage),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(GetPopularAndMovieGenres());
+      },
+    );
+  });
+
   group('GetMoviesFromPopulars', () {
     test(
       'should get data from populars',

@@ -1,3 +1,4 @@
+export 'movie_card.dart';
 export 'movie_genres.dart';
 export 'movie_swiper.dart';
 export 'movies_grid.dart';

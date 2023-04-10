@@ -36,17 +36,17 @@ class MoviesGrid extends StatelessWidget {
             childAspectRatio: 9 / 16,
           ),
           itemCount: movies.length,
-          itemBuilder: (context, index) => MovieCard(movie: movies[index]),
+          itemBuilder: (context, index) => _MoviePoster(movies[index]),
         ),
       ],
     );
   }
 }
 
-class MovieCard extends StatelessWidget {
+class _MoviePoster extends StatelessWidget {
   final Movie movie;
 
-  const MovieCard({super.key, required this.movie});
+  const _MoviePoster(this.movie);
 
   @override
   Widget build(BuildContext context) {

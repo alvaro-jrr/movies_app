@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:movies_app/features/movies/presentation/bloc/movies_bloc.dart';
-import 'package:movies_app/features/movies/presentation/pages/home_page.dart';
+import 'package:movies_app/features/movies/presentation/pages/pages.dart';
+
 import 'injection_container.dart' as di;
 
 void main() async {
@@ -23,8 +25,11 @@ class MyApp extends StatelessWidget {
         initialRoute: 'home',
         routes: {
           'home': (_) => const HomePage(),
+          'movie': (_) => const MoviePage(),
         },
-        theme: ThemeData.dark(),
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: const Color(0xff000d22),
+        ),
       ),
     );
   }

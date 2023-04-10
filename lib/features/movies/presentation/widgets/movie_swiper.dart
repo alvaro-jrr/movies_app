@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 
 import 'package:movies_app/features/movies/domain/entities/movie.dart';
+import 'package:movies_app/features/movies/presentation/widgets/widgets.dart';
 
 class MovieSwiper extends StatelessWidget {
   const MovieSwiper({
@@ -19,8 +20,20 @@ class MovieSwiper extends StatelessWidget {
       height: size.height * 0.6,
       width: double.infinity,
       child: Swiper(
+        onTap: (index) async {
+          await Navigator.pushNamed(
+            context,
+            'movie',
+            arguments: movies[index],
+          );
+
+          // Remove focus when returning to previous page.
+          if (FocusManager.instance.primaryFocus != null) {
+            FocusManager.instance.primaryFocus!.unfocus();
+          }
+        },
         itemCount: movies.length,
-        itemBuilder: (context, index) => _MovieCard(movies[index]),
+        itemBuilder: (context, index) => MovieCard(movies[index]),
         autoplay: true,
         pagination: SwiperPagination(
           alignment: Alignment.bottomRight,
@@ -34,73 +47,6 @@ class MovieSwiper extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _MovieCard extends StatelessWidget {
-  final Movie movie;
-
-  const _MovieCard(this.movie);
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    return _MovieBackground(
-      semanticLabel: '${movie.title} poster',
-      imageUrl: movie.fullPosterPath,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        width: size.width,
-        child: Text(
-          movie.title,
-          maxLines: 2,
-          overflow: TextOverflow.fade,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 32,
-            fontFamily: 'FamiljenGrotesk',
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _MovieBackground extends StatelessWidget {
-  final String? semanticLabel;
-  final String imageUrl;
-  final Widget child;
-
-  const _MovieBackground({
-    required this.imageUrl,
-    required this.child,
-    this.semanticLabel,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          foregroundDecoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.35),
-          ),
-          child: FadeInImage(
-            placeholder: const AssetImage('images/poster-placeholder.png'),
-            image: NetworkImage(imageUrl),
-            imageErrorBuilder: (context, error, stackTrace) {
-              return Image.asset('images/poster-placeholder.png');
-            },
-            fit: BoxFit.cover,
-            width: double.infinity,
-            imageSemanticLabel: semanticLabel ?? 'Movie Poster',
-          ),
-        ),
-        Positioned(bottom: 64, child: child),
-      ],
     );
   }
 }

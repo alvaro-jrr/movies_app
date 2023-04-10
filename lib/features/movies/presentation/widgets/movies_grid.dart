@@ -4,25 +4,41 @@ import 'package:movies_app/features/movies/domain/entities/movie.dart';
 
 class MoviesGrid extends StatelessWidget {
   final List<Movie> movies;
+  final String title;
 
   const MoviesGrid({
     super.key,
     required this.movies,
+    required this.title,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 9 / 16),
-      itemCount: movies.length,
-      itemBuilder: (context, index) => MovieCard(movie: movies[index]),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'FamiljenGrotesk',
+          ),
+        ),
+        const SizedBox(height: 16),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
+            childAspectRatio: 9 / 16,
+          ),
+          itemCount: movies.length,
+          itemBuilder: (context, index) => MovieCard(movie: movies[index]),
+        ),
+      ],
     );
   }
 }

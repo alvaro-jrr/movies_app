@@ -85,7 +85,13 @@ class _Content extends StatelessWidget {
         MovieGenres(genres: genres),
         const SizedBox(height: 32),
         // Movies.
-        MoviesGrid(movies: movies),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: MoviesGrid(
+            movies: movies,
+            title: 'Populars Now',
+          ),
+        ),
         const SizedBox(height: 32),
       ],
     );

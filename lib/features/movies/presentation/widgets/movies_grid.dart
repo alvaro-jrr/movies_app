@@ -36,7 +36,21 @@ class MoviesGrid extends StatelessWidget {
             childAspectRatio: 9 / 16,
           ),
           itemCount: movies.length,
-          itemBuilder: (context, index) => _MoviePoster(movies[index]),
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () async {
+              await Navigator.pushNamed(
+                context,
+                'movie',
+                arguments: movies[index],
+              );
+
+              // Remove focus when returning to previous page.
+              if (FocusManager.instance.primaryFocus != null) {
+                FocusManager.instance.primaryFocus!.unfocus();
+              }
+            },
+            child: _MoviePoster(movies[index]),
+          ),
         ),
       ],
     );

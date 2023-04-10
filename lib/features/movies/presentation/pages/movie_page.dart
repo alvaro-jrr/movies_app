@@ -21,29 +21,30 @@ class MoviePage extends StatelessWidget {
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.4,
-              child: MovieCard(movie),
+              child: MovieCard(movie: movie, bottomSpace: 32),
             ),
-            const SizedBox(height: 24),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Text(
-                'Overview',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  fontFamily: 'FamiljenGrotesk',
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Text(
-                movie.overview,
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Overview',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      fontFamily: 'FamiljenGrotesk',
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    movie.overview,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

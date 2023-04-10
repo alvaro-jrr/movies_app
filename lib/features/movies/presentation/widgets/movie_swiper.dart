@@ -33,7 +33,10 @@ class MovieSwiper extends StatelessWidget {
           }
         },
         itemCount: movies.length,
-        itemBuilder: (context, index) => MovieCard(movies[index]),
+        itemBuilder: (context, index) => MovieCard(
+          movie: movies[index],
+          bottomSpace: 64,
+        ),
         autoplay: true,
         pagination: SwiperPagination(
           alignment: Alignment.bottomRight,

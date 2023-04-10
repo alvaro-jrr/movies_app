@@ -91,9 +91,12 @@ class _MovieBackground extends StatelessWidget {
           child: FadeInImage(
             placeholder: const AssetImage('images/poster-placeholder.png'),
             image: NetworkImage(imageUrl),
+            imageErrorBuilder: (context, error, stackTrace) {
+              return Image.asset('images/poster-placeholder.png');
+            },
             fit: BoxFit.cover,
             width: double.infinity,
-            imageSemanticLabel: semanticLabel ?? '',
+            imageSemanticLabel: semanticLabel ?? 'Movie Poster',
           ),
         ),
         Positioned(bottom: 64, child: child),

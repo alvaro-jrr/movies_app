@@ -15,6 +15,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: const Color(0xff000d22),
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: _Body(),
         ),
       ),
@@ -73,7 +74,7 @@ class _Content extends StatelessWidget {
       children: [
         // Header.
         MovieSwiper(movies: movies.sublist(0, 5)),
-        const SizedBox(height: 24),
+        const SizedBox(height: 32),
         // Search.
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 24),
@@ -82,9 +83,10 @@ class _Content extends StatelessWidget {
         const SizedBox(height: 24),
         // Categories.
         MovieGenres(genres: genres),
-        const SizedBox(height: 24),
+        const SizedBox(height: 32),
         // Movies.
-        const Placeholder(fallbackHeight: 600),
+        MoviesGrid(movies: movies),
+        const SizedBox(height: 32),
       ],
     );
   }

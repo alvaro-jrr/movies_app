@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 
 import 'package:movies_app/features/movies/domain/entities/movie.dart';
+import 'package:movies_app/features/movies/presentation/pages/pages.dart';
 import 'package:movies_app/features/movies/presentation/widgets/widgets.dart';
 
 class MovieSwiper extends StatelessWidget {
@@ -23,7 +24,7 @@ class MovieSwiper extends StatelessWidget {
         onTap: (index) async {
           await Navigator.pushNamed(
             context,
-            'movie',
+            MoviePage.routeName,
             arguments: movies[index],
           );
 

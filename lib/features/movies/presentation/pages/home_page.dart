@@ -7,6 +7,8 @@ import 'package:movies_app/features/movies/presentation/bloc/movies_bloc.dart';
 import 'package:movies_app/features/movies/presentation/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
+  static const String routeName = 'home';
+
   const HomePage({super.key});
 
   @override

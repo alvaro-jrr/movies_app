@@ -4,6 +4,8 @@ import 'package:movies_app/features/movies/domain/entities/movie.dart';
 import 'package:movies_app/features/movies/presentation/widgets/widgets.dart';
 
 class MoviePage extends StatelessWidget {
+  static const String routeName = 'movie';
+
   const MoviePage({super.key});
 
   @override

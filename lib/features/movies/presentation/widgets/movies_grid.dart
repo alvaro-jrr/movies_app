@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:movies_app/features/movies/domain/entities/movie.dart';
+import 'package:movies_app/features/movies/presentation/pages/pages.dart';
 
 class MoviesGrid extends StatelessWidget {
   final List<Movie> movies;
@@ -40,7 +41,7 @@ class MoviesGrid extends StatelessWidget {
             onTap: () async {
               await Navigator.pushNamed(
                 context,
-                'movie',
+                MoviePage.routeName,
                 arguments: movies[index],
               );
 
